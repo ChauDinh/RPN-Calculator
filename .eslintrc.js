@@ -21,6 +21,5 @@ module.exports = {
         "react",
         "@typescript-eslint"
     ],
-    "rules": {
-    }
+    "rules": {}
 };
