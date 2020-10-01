@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
 interface Props {
   text: string;
   special?: boolean;
+  onPress?: any;
 }
 
 const baseContainer = {
@@ -22,7 +23,7 @@ const baseText = {
 const styles = StyleSheet.create<any>({
   container: {
     flex: 1,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#f2f2f2",
     ...baseContainer,
   },
   specialContainer: {
@@ -39,9 +40,12 @@ const styles = StyleSheet.create<any>({
 
 export default function Button(props: Props): JSX.Element {
   return (
-    <View style={props.special ? styles.specialContainer : styles.container}>
+    <TouchableOpacity
+      onPress={() => props.onPress(props.text)}
+      style={props.special ? styles.specialContainer : styles.container}
+    >
       <Text style={styles.text}>{props.text}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
