@@ -1,14 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as Animatable from "react-native-animatable";
 
 import Button from "./components/Button/Button";
 import {
@@ -83,6 +78,7 @@ function Main({
   pressSwapWithDispatch: void;
   toggleNegativeWithDispatch: any;
 }): JSX.Element {
+  const inputRef: React.MutableRefObject<any> = React.useRef(null);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top}>
@@ -90,19 +86,25 @@ function Main({
           onPress={() => toggleNegativeWithDispatch(2)}
           style={styles.number}
         >
-          <Text style={styles.append}>{stack[2] || 0}</Text>
+          <Animatable.Text ref={inputRef} style={styles.append}>
+            {stack[2] || 0}
+          </Animatable.Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => toggleNegativeWithDispatch(1)}
           style={styles.number}
         >
-          <Text style={styles.append}>{stack[1] || 0}</Text>
+          <Animatable.Text ref={inputRef} style={styles.append}>
+            {stack[1] || 0}
+          </Animatable.Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => toggleNegativeWithDispatch(0)}
           style={styles.number}
         >
-          <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+          <Animatable.Text ref={inputRef} style={styles[inputState]}>
+            {stack[0] || 0}
+          </Animatable.Text>
         </TouchableOpacity>
       </View>
       <View style={styles.bottom}>

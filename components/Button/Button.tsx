@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import * as Animatable from "react-native-animatable";
 
 interface Props {
   text: string;
@@ -39,12 +40,18 @@ const styles = StyleSheet.create<any>({
 });
 
 export default function Button(props: Props): JSX.Element {
+  const textRef: React.MutableRefObject<any> = React.useRef(null);
   return (
     <TouchableOpacity
-      onPress={() => props.onPress(props.text)}
+      onPress={() => {
+        textRef.current?.rubberBand(1000);
+        props.onPress(props.text);
+      }}
       style={props.special ? styles.specialContainer : styles.container}
     >
-      <Text style={styles.text}>{props.text}</Text>
+      <Animatable.Text ref={textRef} style={styles.text}>
+        {props.text}
+      </Animatable.Text>
     </TouchableOpacity>
   );
 }
