@@ -1,13 +1,35 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, View, Text, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import Button from "./components/Button/Button";
-import { pressEnter, pressNumber } from "./reducer";
+import {
+  pressEnter,
+  pressNumber,
+  pressOperator,
+  pressClear,
+  pressSwap,
+  toggleNegative,
+} from "./reducer";
 
-const styles = StyleSheet.create({
+const baseNumber = {
+  backgroundColor: "#494949",
+  padding: 10,
+
+  fontSize: 40,
+  fontWeight: "600",
+  textAlign: "right",
+};
+
+const styles: any = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fafafa",
@@ -20,16 +42,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   number: {
-    backgroundColor: "#494949",
-    padding: 10,
     borderBottomWidth: 1,
     borderColor: "#fafafa",
-  },
-  numberText: {
-    color: "#fafafa",
-    fontSize: 40,
-    fontWeight: "600",
-    textAlign: "right",
   },
   row: {
     flex: 1,
@@ -38,57 +52,87 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#fff",
   },
+  append: {
+    color: "#fff",
+    ...baseNumber,
+  },
+  replace: {
+    color: "#2e71e5",
+    ...baseNumber,
+  },
+  push: {
+    color: "#9bc23c",
+    ...baseNumber,
+  },
 });
 
 function Main({
   calculatorState: { stack, inputState },
   pressNumberWithDispatch,
   pressEnterWithDispatch,
+  pressOperatorWithDispatch,
+  pressClearWithDispatch,
+  pressSwapWithDispatch,
+  toggleNegativeWithDispatch,
 }: {
-  currentNumber: string;
+  calculatorState: { stack: string[]; inputState: string };
   pressNumberWithDispatch: void;
+  pressEnterWithDispatch: void;
+  pressOperatorWithDispatch: void;
+  pressClearWithDispatch: void;
+  pressSwapWithDispatch: void;
+  toggleNegativeWithDispatch: any;
 }): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.top}>
-        <View style={styles.number}>
-          <Text style={styles.numberText}>{stack[2] || 0}</Text>
-        </View>
-        <View style={styles.number}>
-          <Text style={styles.numberText}>{stack[1] || 0}</Text>
-        </View>
-        <View style={styles.number}>
-          <Text style={styles.numberText}>{stack[0] || 0}</Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => toggleNegativeWithDispatch(2)}
+          style={styles.number}
+        >
+          <Text style={styles.append}>{stack[2] || 0}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => toggleNegativeWithDispatch(1)}
+          style={styles.number}
+        >
+          <Text style={styles.append}>{stack[1] || 0}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => toggleNegativeWithDispatch(0)}
+          style={styles.number}
+        >
+          <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.bottom}>
         <View style={styles.row}>
-          <Button text="clear" />
-          <Button text="pow" />
-          <Button text="swap" />
-          <Button text="/" />
+          <Button text="clear" onPress={pressClearWithDispatch} />
+          <Button text="pow" onPress={pressOperatorWithDispatch} />
+          <Button text="swap" onPress={pressSwapWithDispatch} />
+          <Button text="/" onPress={pressOperatorWithDispatch} />
         </View>
         <View style={styles.row}>
           <Button text="9" onPress={pressNumberWithDispatch} />
           <Button text="8" onPress={pressNumberWithDispatch} />
           <Button text="7" onPress={pressNumberWithDispatch} />
-          <Button text="X" />
+          <Button text="X" onPress={pressOperatorWithDispatch} />
         </View>
         <View style={styles.row}>
           <Button text="6" onPress={pressNumberWithDispatch} />
           <Button text="5" onPress={pressNumberWithDispatch} />
           <Button text="4" onPress={pressNumberWithDispatch} />
-          <Button text="-" />
+          <Button text="-" onPress={pressOperatorWithDispatch} />
         </View>
         <View style={styles.row}>
           <Button text="3" onPress={pressNumberWithDispatch} />
           <Button text="2" onPress={pressNumberWithDispatch} />
           <Button text="1" onPress={pressNumberWithDispatch} />
-          <Button text="+" />
+          <Button text="+" onPress={pressOperatorWithDispatch} />
         </View>
         <View style={styles.row}>
           <Button text="0" onPress={pressNumberWithDispatch} />
-          <Button text="." />
+          <Button text="." onPress={pressNumberWithDispatch} />
           <Button text="Enter" special onPress={pressEnterWithDispatch} />
         </View>
       </View>
@@ -104,6 +148,10 @@ export default connect(
       {
         pressNumberWithDispatch: pressNumber,
         pressEnterWithDispatch: pressEnter,
+        pressOperatorWithDispatch: pressOperator,
+        pressClearWithDispatch: pressClear,
+        pressSwapWithDispatch: pressSwap,
+        toggleNegativeWithDispatch: toggleNegative,
       },
       dispatch
     )
