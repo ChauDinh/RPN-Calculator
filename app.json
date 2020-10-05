@@ -13,14 +13,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "This is a Reverse Polish Notation calculator I've created with React Native. The source code can be found on GitHub: https://github.com/ChauDinh/RPN-Calculator"
   }
 }
